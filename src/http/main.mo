@@ -32,13 +32,10 @@ actor http {
     };
 
     public query func streamingCallback(tk: CallbackToken): async StreamingCallbackHttpResponse{
-        if(tk.index <= 3) return {
-            body = Text.encodeUtf8(ans[tk.index]);
-            token = ?{index = tk.index + 1;}
-        };
+        let (payload, token) = _workContent(tk.index, 3);
         {
-            body = Text.encodeUtf8("gggg");
-            token = null;
+            body = payload;
+            token = token;
         }
     };
 
