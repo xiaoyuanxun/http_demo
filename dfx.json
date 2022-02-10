@@ -5,10 +5,6 @@
     "http": {
       "type": "motoko",
       "main": "src/http/main.mo"
-    },
-    "http1": {
-      "type": "motoko",
-      "main": "src/http/main1.mo"
     }
   },
   "defaults": {
