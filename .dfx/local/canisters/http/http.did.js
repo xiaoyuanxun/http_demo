@@ -6,15 +6,19 @@ export const idlFactory = ({ IDL }) => {
     'body' : IDL.Vec(IDL.Nat8),
     'headers' : IDL.Vec(HeaderField),
   });
-  const Token = IDL.Record({ 'index' : IDL.Nat });
+  const CallbackToken = IDL.Record({ 'index' : IDL.Nat });
   const StreamingCallbackHttpResponse = IDL.Record({
-    'token' : IDL.Opt(Token),
+    'token' : IDL.Opt(CallbackToken),
     'body' : IDL.Vec(IDL.Nat8),
   });
   const StreamingStrategy = IDL.Variant({
     'Callback' : IDL.Record({
-      'token' : Token,
-      'callback' : IDL.Func([Token], [StreamingCallbackHttpResponse], []),
+      'token' : CallbackToken,
+      'callback' : IDL.Func(
+          [CallbackToken],
+          [StreamingCallbackHttpResponse],
+          ['query'],
+        ),
     }),
   });
   const HttpResponse = IDL.Record({
@@ -25,8 +29,11 @@ export const idlFactory = ({ IDL }) => {
   });
   return IDL.Service({
     'http_request' : IDL.Func([HttpRequest], [HttpResponse], ['query']),
-    'http_request_update' : IDL.Func([HttpRequest], [HttpResponse], []),
-    'tokencallback' : IDL.Func([Token], [StreamingCallbackHttpResponse], []),
+    'streamingCallback' : IDL.Func(
+        [CallbackToken],
+        [StreamingCallbackHttpResponse],
+        ['query'],
+      ),
   });
 };
 export const init = ({ IDL }) => { return []; };

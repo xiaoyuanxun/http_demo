@@ -1,4 +1,5 @@
 import type { Principal } from '@dfinity/principal';
+export interface CallbackToken { 'index' : bigint }
 export type HeaderField = [string, string];
 export interface HttpRequest {
   'url' : string,
@@ -13,15 +14,15 @@ export interface HttpResponse {
   'status_code' : number,
 }
 export interface StreamingCallbackHttpResponse {
-  'token' : [] | [Token],
+  'token' : [] | [CallbackToken],
   'body' : Array<number>,
 }
 export type StreamingStrategy = {
-    'Callback' : { 'token' : Token, 'callback' : [Principal, string] }
+    'Callback' : { 'token' : CallbackToken, 'callback' : [Principal, string] }
   };
-export interface Token { 'index' : bigint }
 export interface _SERVICE {
   'http_request' : (arg_0: HttpRequest) => Promise<HttpResponse>,
-  'http_request_update' : (arg_0: HttpRequest) => Promise<HttpResponse>,
-  'tokencallback' : (arg_0: Token) => Promise<StreamingCallbackHttpResponse>,
+  'streamingCallback' : (arg_0: CallbackToken) => Promise<
+      StreamingCallbackHttpResponse
+    >,
 }
