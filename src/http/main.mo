@@ -1,6 +1,8 @@
 import Text "mo:base/Text";
+
+// callback版本
 actor http {
-    let ans: [Text] = ["xiaoyuanxun","xun1","xun2","xun3"];
+    let ans: [Text] = ["xx","ww","cc"];
     type HeaderField = (Text, Text);
     type StreamingCallbackHttpResponse = {
         body: Blob;
@@ -53,12 +55,27 @@ actor http {
     };
 
     public query func http_request(request: HttpRequest): async HttpResponse {
-        {
-            status_code = 200;
-            headers = [];
-            body = Text.encodeUtf8("xiaoyuanxun");
-            streaming_strategy = ?new_strategy();
+        if(request.url == "/xun") {
+            {
+                status_code = 200;
+                headers = [];
+                body = Text.encodeUtf8("xiaoyuanxun1");
+                streaming_strategy = null;
+            }
+        } else {
+            {
+                status_code = 404;
+                headers = [];
+                body = Text.encodeUtf8("worng url");
+                streaming_strategy = null;
+            }
         }
+        // {
+        //     status_code = 200;
+        //     headers = [];
+        //     body = Text.encodeUtf8("xiaoyuanxun");
+        //     streaming_strategy = ?new_strategy();
+        // }
     };
 
     public shared func http_request_update(request: HttpRequest): async HttpResponse {
