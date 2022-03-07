@@ -6,16 +6,16 @@ export const idlFactory = ({ IDL }) => {
     'body' : IDL.Vec(IDL.Nat8),
     'headers' : IDL.Vec(HeaderField),
   });
-  const CallbackToken = IDL.Record({ 'index' : IDL.Nat });
+  const Token = IDL.Record({ 'index' : IDL.Nat });
   const StreamingCallbackHttpResponse = IDL.Record({
-    'token' : IDL.Opt(CallbackToken),
+    'token' : IDL.Opt(Token),
     'body' : IDL.Vec(IDL.Nat8),
   });
   const StreamingStrategy = IDL.Variant({
     'Callback' : IDL.Record({
-      'token' : CallbackToken,
+      'token' : Token,
       'callback' : IDL.Func(
-          [CallbackToken],
+          [Token],
           [StreamingCallbackHttpResponse],
           ['query'],
         ),
@@ -30,7 +30,7 @@ export const idlFactory = ({ IDL }) => {
   return IDL.Service({
     'http_request' : IDL.Func([HttpRequest], [HttpResponse], ['query']),
     'streamingCallback' : IDL.Func(
-        [CallbackToken],
+        [Token],
         [StreamingCallbackHttpResponse],
         ['query'],
       ),

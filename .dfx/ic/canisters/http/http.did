@@ -1,15 +1,16 @@
+type Token = record {index: nat;};
 type StreamingStrategy = variant {
                            Callback:
                             record {
                               callback:
-                               func (CallbackToken) ->
+                               func (Token) ->
                                 (StreamingCallbackHttpResponse) query;
-                              token: CallbackToken;
+                              token: Token;
                             };};
 type StreamingCallbackHttpResponse = 
  record {
    body: blob;
-   token: opt CallbackToken;
+   token: opt Token;
  };
 type HttpResponse = 
  record {
@@ -30,8 +31,7 @@ type HeaderField =
    text;
    text;
  };
-type CallbackToken = record {index: nat;};
 service : {
   http_request: (HttpRequest) -> (HttpResponse) query;
-  streamingCallback: (CallbackToken) -> (StreamingCallbackHttpResponse) query;
+  streamingCallback: (Token) -> (StreamingCallbackHttpResponse) query;
 }

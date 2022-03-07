@@ -7,7 +7,7 @@ export interface HttpRequest {
   'headers' : Array<HeaderField>,
 }
 export interface HttpResponse {
-  'body' : Array<Array<number>>,
+  'body' : Array<number>,
   'headers' : Array<HeaderField>,
   'streaming_strategy' : [] | [StreamingStrategy],
   'status_code' : number,
@@ -19,7 +19,10 @@ export interface StreamingCallbackHttpResponse {
 export type StreamingStrategy = {
     'Callback' : { 'token' : Token, 'callback' : [Principal, string] }
   };
-export type Token = {};
+export interface Token { 'index' : bigint }
 export interface _SERVICE {
   'http_request' : (arg_0: HttpRequest) => Promise<HttpResponse>,
+  'streamingCallback' : (arg_0: Token) => Promise<
+      StreamingCallbackHttpResponse
+    >,
 }

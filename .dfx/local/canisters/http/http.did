@@ -1,10 +1,10 @@
-type Token = record {};
+type Token = record {index: nat;};
 type StreamingStrategy = variant {
                            Callback:
                             record {
                               callback:
                                func (Token) ->
-                                (StreamingCallbackHttpResponse);
+                                (StreamingCallbackHttpResponse) query;
                               token: Token;
                             };};
 type StreamingCallbackHttpResponse = 
@@ -14,7 +14,7 @@ type StreamingCallbackHttpResponse =
  };
 type HttpResponse = 
  record {
-   body: vec blob;
+   body: blob;
    headers: vec HeaderField;
    status_code: nat16;
    streaming_strategy: opt StreamingStrategy;
@@ -33,4 +33,5 @@ type HeaderField =
  };
 service : {
   http_request: (HttpRequest) -> (HttpResponse) query;
+  streamingCallback: (Token) -> (StreamingCallbackHttpResponse) query;
 }

@@ -7,15 +7,15 @@ actor http {
     type HeaderField = (Text, Text);
     type StreamingCallbackHttpResponse = {
         body: Blob;
-        token: ?CallbackToken;
+        token: ?Token;
     };
-    type CallbackToken = {
+    type Token = {
         index: Nat;
     };
     type StreamingStrategy = {
         #Callback: {
-            callback: query (CallbackToken) -> async (StreamingCallbackHttpResponse);
-            token: CallbackToken;
+            callback: query (Token) -> async (StreamingCallbackHttpResponse);
+            token: Token;
         }
     };
     type HttpRequest =  {
@@ -31,7 +31,7 @@ actor http {
         streaming_strategy: ?StreamingStrategy;
     };
 
-    public query func streamingCallback(tk: CallbackToken): async StreamingCallbackHttpResponse{
+    public query func streamingCallback(tk: Token): async StreamingCallbackHttpResponse{
         let (payload, token) = _workContent(tk.index, 3);
         {
             body = payload;
@@ -39,7 +39,7 @@ actor http {
         }
     };
 
-    private func _workContent(index: Nat,size: Nat): (Blob, ?CallbackToken) {
+    private func _workContent(index: Nat,size: Nat): (Blob, ?Token) {
         let payload = Text.encodeUtf8(ans[index]);
         if(index == size) return (payload, null);
         (payload, ?{index = index + 1;})
